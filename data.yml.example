@@ -1,0 +1,55 @@
+---
+font: Open Sans
+fontsize: 10pt
+geometry: left=30mm,right=30mm,top=20mm,bottom=20mm
+
+invoice-number: 2019-04
+date: 07-04-2019
+
+issuer:
+  name: Bertram Gilfoyle
+  address:
+    - 10 Employee Street
+    - City
+    - State
+    - Postcode
+    - Country
+    -
+    - gilfoyle@piedpiper.com
+    - (00357) 123-456789
+  bank-details:
+    name: Bank For Your Buck
+    address: 10 Money Street, City, State, Postcode, Country
+    account-number: 000-123-4
+    iban: CY00000000000000000000001234
+    swift: ABCDEFGH
+
+recipient:
+  name: Aviato
+  address:
+    - 10 Company Street
+    - City
+    - State
+    - Postcode
+    - Country
+
+currency: EUR
+convert-currency-to: USD
+exchange-rate: 2.0
+
+services:
+  - description: Monthly Salary
+    price: 1000.00
+  - description: Overtime
+    details: 10 hours at €12.00 / hour
+    price: 120.00
+  - description: Used Anton
+    details: 20 hours at €100.00 / hour
+    price: 2000.00
+  - description: Expense \#1
+    details: Ate pizza (receipt attached)
+    price: 10.00
+  - description: Expense \#2
+    details: Travelled to conference (receipt attached)
+    price: 20.00
+---

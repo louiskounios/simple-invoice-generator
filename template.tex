@@ -1,0 +1,145 @@
+%!TEX TS-program = xelatex
+
+\documentclass[a4paper,$fontsize$]{article}
+
+% Adjust paper margins.
+\usepackage{geometry}
+\geometry{$geometry$}
+
+% Disable page numbering.
+\pagenumbering{gobble}
+
+% Clean up footnote formatting.
+\usepackage[hang,flushmargin,norule,symbol]{footmisc} % Must be loaded before ragged2e.
+
+% Typeset entire document with left alignment.
+\usepackage[document]{ragged2e}
+
+% Load OpenType fonts in LaTeX document.
+\usepackage{fontspec}
+
+% Configure main and sans fonts.
+$if(font)$
+  \setmainfont{$font$}
+$endif$
+
+\usepackage{numprint} % Number formatting.
+\usepackage{spreadtab} % Excel-like tables.
+\usepackage{xpatch} % Needed for patching later.
+
+% Configure hyperlinks and PDF metadata.
+\usepackage{hyperref}
+\hypersetup {
+  hidelinks,
+  pdfpagemode=FullScreen,
+  pdfauthor={$issuer.name$},
+  pdfsubject=Invoice \#$invoice-number$,
+  pdftitle=Invoice \#$invoice-number$,
+}
+
+\usepackage{xcolor}
+\usepackage{tabularx}
+
+\definecolor{DimGray}{RGB}{105,105,105}
+\definecolor{LightGray}{RGB}{211,211,211}
+
+% Breathing room between table rows.
+\renewcommand{\arraystretch}{1.15}
+
+% Use thousands separator in spreadtab.
+% https://groups.google.com/forum/#!topic/comp.text.tex/G8-ckv-MgZQ
+\npthousandsep{,}
+\npdecimalsign{.}
+\makeatletter
+\xpatchcmd\ST@read@cells
+  {\ST@remove@first@spaces\ST@current@cell}
+  {\ST@remove@first@spaces\ST@current@cell
+  \StrDel\ST@current@cell,[\ST@current@cell]}{}{}
+\makeatother
+\let\STprintnum\numprint
+\STautoround*{2} % Always show 2 decimals in spreadtab.
+
+\begin{document}
+\begin{tabular*}{\textwidth}{@ {}l @{\extracolsep{\fill}} r @{}}
+  \begin{tabular}[b]{@{} l}
+    {\fontsize{30}{30}\selectfont\textbf{\uppercase{Invoice}}}
+  \end{tabular} &
+  \begin{tabular}[b]{r @{}}
+    \textbf{$issuer.name$} \\
+    $for(issuer.address)$
+    $issuer.address$ \\
+    $endfor$
+  \end{tabular}
+\end{tabular*}
+
+\vspace{1.8em}
+\noindent\makebox[\linewidth]{\textcolor{LightGray}{{\rule{\paperwidth}{0.6pt}}}}%
+\vspace{1.8em}
+
+\noindent\textcolor{DimGray}{\large\textbf{\uppercase{Bill to}}} \\ \medskip
+\begin{tabular*}{\textwidth}{@{} l @{\extracolsep{\fill}} r @{}}
+  \begin{tabular}[t]{@{} l}
+    \textbf{$recipient.name$} \\
+    $for(recipient.address)$
+    $recipient.address$ \\
+    $endfor$
+  \end{tabular} &
+  \begin{tabular}[t]{@{} r @{\hspace{0.7em}} l @{}}
+    \textbf{Invoice Number:} & $invoice-number$ \\
+    \textbf{Invoice Date:} & $date$ \\
+    \textbf{Payment Due:} & Upon receipt
+  \end{tabular}
+\end{tabular*}
+
+\vspace{2em}
+
+\renewcommand{\arraystretch}{1.8}
+\newcounter{item}
+  $if(convert-currency-to)$
+    \begin{spreadtab}{{tabularx}{\textwidth}[t t t t]{c X r r}}
+      @ \textbf{Item} & @ \textbf{Description} & @ \textbf{Price in $currency$} & @ \textbf{Price in $convert-currency-to$}\footnotemark \\ \hline
+      $for(services)$
+        @ \refstepcounter{item} \theitem &
+        @ $services.description$
+          $if(services.details)$ \newline \small $services.details$ $endif$ &
+        $services.price$ &
+        $services.price$ * $exchange-rate$ \\
+      $endfor$
+      \hline
+      @ & @ & & \\[-2em]
+      @ & @ & @ \multicolumn{1}{r}{\textbf{Amount Due ($convert-currency-to$):}} & \textbf{:={sum(d1:[0,-1])}}
+    \end{spreadtab}
+  $else$
+    \begin{spreadtab}{{tabularx}{\textwidth}[t t t]{c X r}}
+      @ \textbf{Item} & @ \textbf{Description} & @ \textbf{Price in $currency$} \\ \hline
+      $for(services)$
+        @ \refstepcounter{item} \theitem &
+        @ $services.description$
+          $if(services.details)$ \newline \small $services.details$ $endif$ &
+        $services.price$ \\
+      $endfor$
+      \hline
+      @ & @ & \\[-2em]
+      @ & @ \multicolumn{1}{r}{\textbf{Amount Due ($currency$):}} & \textbf{:={sum(c1:[0,-1])}}
+    \end{spreadtab}
+  $endif$
+
+$if(convert-currency-to)$
+  \footnotetext{1 $currency$ = $exchange-rate$ $convert-currency-to$ as per www.xe.com on $date$.}
+$endif$
+
+\vspace{1.8em}
+\noindent\makebox[\linewidth]{\textcolor{LightGray}{{\rule{\paperwidth}{0.6pt}}}}%
+\vspace{1.8em}
+
+\renewcommand{\arraystretch}{1.15}
+\noindent\textcolor{DimGray}{\large\textbf{\uppercase{Bank details}}} \\ \medskip
+\begin{tabular}[b]{@{} l l @{}}
+  \textbf{Name:} & $issuer.bank-details.name$ \\
+  \textbf{Address:} & $issuer.bank-details.address$ \\
+  \textbf{Account Number:} & $issuer.bank-details.account-number$ \\
+  \textbf{IBAN:} & $issuer.bank-details.iban$ \\
+  \textbf{SWIFT / BIC:} & $issuer.bank-details.swift$
+\end{tabular}
+
+\end{document}
