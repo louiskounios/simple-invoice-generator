@@ -84,6 +84,10 @@ $endif$
     $for(from.contact-details)$
     $from.contact-details$ \\
     $endfor$
+    $if(from.tax-identification-number)$
+      \\
+      Tax Identification No: $from.tax-identification-number$
+    $endif$
     $if(from.vat-registration-number)$
       \\
       VAT Registration No: $from.vat-registration-number$

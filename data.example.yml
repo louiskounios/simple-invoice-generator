@@ -17,6 +17,7 @@ from:
     -
     - 'gilfoyle@piedpiper.com'
     - '(+357) 123-456789'
+  tax-identification-number: 'CY12345678X'
   vat-registration-number: 'CY12345678X'
   bank-details:
     name: 'Bank For Your Buck'

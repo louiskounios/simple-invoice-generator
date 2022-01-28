@@ -51,6 +51,7 @@ from:
     -
     - 'gilfoyle@piedpiper.com'
     - '(+357) 123-456789'
+  tax-identification-number: 'CY12345678X'
   vat-registration-number: 'CY12345678X'
   bank-details:
     name: 'Bank For Your Buck'
@@ -67,6 +68,9 @@ from:
 `from.contact-details` are the contact details (address, email, phone number, etc) of the issuer of the invoice.
 Provided in list format.
 Each element in the list will sit on its own line.
+
+`from.tax-identification-number` is the tax identification number of the issuer of the invoice.
+Optional.
 
 `from.vat-registration-number` is the VAT registration number of the issuer of the invoice.
 Optional.
