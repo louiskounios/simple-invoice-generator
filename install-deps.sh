@@ -2,7 +2,7 @@
 
 set -xe
 
-PANDOC_URL="https://github.com/jgm/pandoc/releases/download/2.7.2/pandoc-2.7.2-1-amd64.deb"
+PANDOC_URL="https://github.com/jgm/pandoc/releases/download/2.17.0.1/pandoc-2.17.0.1-1-amd64.deb"
 PANDOC_DL_LOCATION="/tmp/pandoc.deb"
 
 apt-get update -qq

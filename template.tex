@@ -32,7 +32,7 @@ $endif$
 \hypersetup {
   hidelinks,
   pdfpagemode=FullScreen,
-  pdfauthor={$issuer.name$},
+  pdfauthor={$from.name$},
   pdfsubject=Invoice \#$invoice-number$,
   pdftitle=Invoice \#$invoice-number$,
 }
@@ -60,15 +60,13 @@ $endif$
 \STautoround*{2} % Always show 2 decimals in spreadtab.
 
 \begin{document}
-\begin{tabular*}{\textwidth}{@ {}l @{\extracolsep{\fill}} r @{}}
-  \begin{tabular}[b]{@{} l}
+\begin{tabular*}{\textwidth}{@{} l @{\extracolsep{\fill}} r @{}}
+  \begin{tabular}[b]{@{} l @{}}
     {\fontsize{30}{30}\selectfont\textbf{\uppercase{Invoice}}}
   \end{tabular} &
-  \begin{tabular}[b]{r @{}}
-    \textbf{$issuer.name$} \\
-    $for(issuer.address)$
-    $issuer.address$ \\
-    $endfor$
+  \begin{tabular}[b]{@{} r @{}}
+    \textbf{Invoice No:} $invoice-number$ \\
+    \textbf{Invoice Date:} $date$
   \end{tabular}
 \end{tabular*}
 
@@ -76,57 +74,69 @@ $endif$
 \noindent\makebox[\linewidth]{\textcolor{LightGray}{{\rule{\paperwidth}{0.6pt}}}}%
 \vspace{1.8em}
 
-\noindent\textcolor{DimGray}{\large\textbf{\uppercase{Bill to}}} \\ \medskip
 \begin{tabular*}{\textwidth}{@{} l @{\extracolsep{\fill}} r @{}}
+  \textcolor{DimGray}{\large\textbf{\uppercase{From}}} &
+  \textcolor{DimGray}{\large\textbf{\uppercase{To}}} \\
+  \\[-1.3em]
   \begin{tabular}[t]{@{} l}
-    \textbf{$recipient.name$} \\
-    $for(recipient.address)$
-    $recipient.address$ \\
+    \textbf{$from.name$}
+    \\
+    $for(from.contact-details)$
+    $from.contact-details$ \\
     $endfor$
+    $if(from.vat-registration-number)$
+      \\
+      VAT Reg No: $from.vat-registration-number$
+    $endif$
   \end{tabular} &
-  \begin{tabular}[t]{@{} r @{\hspace{0.7em}} l @{}}
-    \textbf{Invoice Number:} & $invoice-number$ \\
-    \textbf{Invoice Date:} & $date$ \\
-    \textbf{Payment Due:} & Upon receipt
+  \begin{tabular}[t]{r @{}}
+    \textbf{$to.name$}
+    \\
+    $for(to.address)$
+    $to.address$ \\
+    $endfor$
+    $if(to.vat-registration-number)$
+      \\
+      VAT Reg No: $to.vat-registration-number$
+    $endif$
   \end{tabular}
 \end{tabular*}
 
-\vspace{2em}
+\vspace{1.8em}
+\noindent\makebox[\linewidth]{\textcolor{LightGray}{{\rule{\paperwidth}{0.6pt}}}}%
+\vspace{1.8em}
 
 \renewcommand{\arraystretch}{1.8}
 \newcounter{item}
-  $if(convert-currency-to)$
-    \begin{spreadtab}{{tabularx}{\textwidth}[t t t t]{c X r r}}
-      @ \textbf{Item} & @ \textbf{Description} & @ \textbf{Price in $currency$} & @ \textbf{Price in $convert-currency-to$}\footnotemark \\ \hline
-      $for(services)$
-        @ \refstepcounter{item} \theitem &
-        @ $services.description$
-          $if(services.details)$ \newline \small $services.details$ $endif$ &
-        $services.price$ &
-        $services.price$ * $exchange-rate$ \\
-      $endfor$
-      \hline
-      @ & @ & & \\[-2em]
-      @ & @ & @ \multicolumn{1}{r}{\textbf{Amount Due ($convert-currency-to$):}} & \textbf{:={sum(d1:[0,-1])}}
-    \end{spreadtab}
-  $else$
-    \begin{spreadtab}{{tabularx}{\textwidth}[t t t]{c X r}}
-      @ \textbf{Item} & @ \textbf{Description} & @ \textbf{Price in $currency$} \\ \hline
-      $for(services)$
-        @ \refstepcounter{item} \theitem &
-        @ $services.description$
-          $if(services.details)$ \newline \small $services.details$ $endif$ &
-        $services.price$ \\
-      $endfor$
-      \hline
-      @ & @ & \\[-2em]
-      @ & @ \multicolumn{1}{r}{\textbf{Amount Due ($currency$):}} & \textbf{:={sum(c1:[0,-1])}}
-    \end{spreadtab}
-  $endif$
-
-$if(convert-currency-to)$
-  \footnotetext{1 $currency$ = $exchange-rate$ $convert-currency-to$ as per www.xe.com on $date$.}
-$endif$
+\begin{spreadtab}{{tabularx}{\textwidth}[t t t]{c X r}}
+  @ \textbf{\#} & @ \textbf{Description} & @ \textbf{Amount ($currency$)} \\ \hline
+  $for(services)$
+    @ \refstepcounter{item} \theitem &
+    @ $services.description$
+      $if(services.hourly)$
+        \newline \small $services.hourly.hours$ hours at a rate of $currency$$services.hourly.rate$ per hour
+      $elseif(services.other)$
+        $if(services.other.details)$
+        \newline \small $services.other.details$
+        $endif$
+      $else$
+        \newline \small Nothing to see here. Please disperse.
+      $endif$ &
+    $if(services.hourly)$
+      $services.hourly.hours$ * $services.hourly.rate$
+    $elseif(services.other)$
+      $services.other.price$
+    $else$
+      0
+    $endif$ \\
+  $endfor$
+  \hline
+  @ & @ & \\[-1.9em]
+  @ & @ \multicolumn{1}{r}{Subtotal:} & :={sum(c1:[0,-2])} \\[-0.7em]
+  @ & @ \multicolumn{1}{r}{VAT rate (\%):} & $vat-rate$ \\[-0.7em]
+  @ & @ \multicolumn{1}{r}{VAT due:} & [0,-2] * ([0,-1] / 100) \\[-0.7em]
+  @ & @ \multicolumn{1}{r}{\textbf{Total ($currency$):}} & [0,-3] + [0,-1]
+\end{spreadtab}
 
 \vspace{1.8em}
 \noindent\makebox[\linewidth]{\textcolor{LightGray}{{\rule{\paperwidth}{0.6pt}}}}%
@@ -135,11 +145,11 @@ $endif$
 \renewcommand{\arraystretch}{1.15}
 \noindent\textcolor{DimGray}{\large\textbf{\uppercase{Bank details}}} \\ \medskip
 \begin{tabular}[b]{@{} l l @{}}
-  \textbf{Name:} & $issuer.bank-details.name$ \\
-  \textbf{Address:} & $issuer.bank-details.address$ \\
-  \textbf{Account Number:} & $issuer.bank-details.account-number$ \\
-  \textbf{IBAN:} & $issuer.bank-details.iban$ \\
-  \textbf{SWIFT / BIC:} & $issuer.bank-details.swift$
+  \textbf{Name:} & $from.bank-details.name$ \\
+  \textbf{Address:} & $from.bank-details.address$ \\
+  \textbf{Account Number:} & $from.bank-details.account-number$ \\
+  \textbf{IBAN:} & $from.bank-details.iban$ \\
+  \textbf{SWIFT / BIC:} & $from.bank-details.swift$
 \end{tabular}
 
 \end{document}

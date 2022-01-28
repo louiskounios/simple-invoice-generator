@@ -7,25 +7,23 @@ Scroll to the bottom for example invoices.
 ## Data File
 
 A `data.yml` file is required to configure the output of the resulting pdf.
-An example data file is shown in [`data.yml.example`](data.yml.example).
+An example data file is shown in [`data.example.yml`](data.example.yml).
 All keys are detailed below.
 Unless specified otherwise, values are treated as raw strings.
+Note that the YAML file must be properly terminated (`---` at the end of the file) otherwise pandoc will have trouble loading it.
 
 ```yaml
-font: Open Sans
-fontsize: 10pt
-geometry: left=30mm,right=30mm,top=20mm,bottom=20mm
+font: 'Open Sans'
+fontsize: '10pt'
+geometry: 'left=20mm,right=20mm,top=30mm,bottom=30mm'
 ```
 
 `font` can be one of:
 
 - Catamaran
-- Dosis
 - Lato
 - Open Sans
-- Quicksand
 - Raleway
-- Roboto
 - Ubuntu
 
 `fontsize` can be any valid font size that can be read by `\documentclass` in LaTeX.
@@ -33,106 +31,123 @@ geometry: left=30mm,right=30mm,top=20mm,bottom=20mm
 `geometry` can be any valid geometry configuration that can be read by `\geometry` in LaTeX.
 
 ```yaml
-invoice-number: 2019-04
-date: 07-04-2019
+invoice-number: '00001'
+date: '28/01/2022'
 ```
 
-`invoice-number` is the invoice number.
+`invoice-number` is the invoice number in string format.
 
 `date` is the date the invoice was issued on.
 
 ```yaml
-issuer:
-  name: Bertram Gilfoyle
-  address:
-    - 10 Employee Street
-    - City
-    - State
-    - Postcode
-    - Country
+from:
+  name: 'Bertram Gilfoyle'
+  contact-details:
+    - '10 Employee Street'
+    - 'City'
+    - 'State'
+    - 'Postcode'
+    - 'Country'
     -
-    - gilfoyle@piedpiper.com
-    - (00357) 123-456789
+    - 'gilfoyle@piedpiper.com'
+    - '(+357) 123-456789'
+  vat-registration-number: 'CY12345678X'
   bank-details:
-    name: Bank For Your Buck
-    address: 10 Money Street, City, State, Postcode, Country
-    account-number: 000-123-4
-    iban: CY00000000000000000000001234
-    swift: ABCDEFGH
+    name: 'Bank For Your Buck'
+    address: '10 Money Street, City, State, Postcode, Country'
+    account-number: '000-123-4'
+    iban: 'CY00000000000000000000001234'
+    swift: 'ABCDEFGH'
 ```
 
-`name` is the name of the issuer of the invoice.
+`from` is map containing details about the issuer of the invoice.
 
-`address` is the address of the issuer of the invoice.
+`from.name` is the name of the issuer of the invoice.
+
+`from.contact-details` are the contact details (address, email, phone number, etc) of the issuer of the invoice.
 Provided in list format.
 Each element in the list will sit on its own line.
 
-`bank-details` are the bank details of the issuer of the invoice.
+`from.vat-registration-number` is the VAT registration number of the issuer of the invoice.
+Optional.
+
+`from.bank-details` are the bank details of the issuer of the invoice.
 All nested variables are required.
 
 ```yaml
-recipient:
-  name: Aviato
+to:
+  name: 'Aviato'
+  vat-registration-number: 'IT12345678901'
   address:
-    - 10 Company Street
-    - City
-    - State
-    - Postcode
-    - Country
+    - '10 Company Street'
+    - 'City'
+    - 'State'
+    - 'Postcode'
+    - 'Country'
 ```
 
-`name` is the name of the recipient of the invoice.
+`to` is map containing details about the recipient of the invoice.
 
-`address` is the address of the recipient of the invoice.
+`to.name` is the individual / company name of the recipient of the invoice.
+
+`to.vat-registration-number` is the VAT registration number of the recipient of the invoice.
+
+`to.address` is the address of the recipient of the invoice.
 Provided in list format.
 Each element in the list will sit on its own line.
 
 ```yaml
-currency: EUR
-convert-currency-to: USD
-exchange-rate: 2.0
+currency: '€'
+vat-rate: 20
 ```
 
-`currency` is the currency used in paperwork / agreements.
+`currency` is the currency to be used on the invoice.
 
-`convert-currency-to` is the currency that will be used for payment.
-If undefined, `currency` is used instead.
-If not undefined, `exchange-rate` must also be defined and set.
-
-`exchange-rate` is the exchange rate between `currency` and `convert-currency-to`.
-Must be defined and set if `convert-currency-to` is defined.
-Must be a number.
-Used to calculate the prices in the currency that will be used for payment.
-Assumed to have been set according to www.xe.com.
+`vat-rate` is the VAT rate.
+Must be a number in the range 0-100.
 
 ```yaml
 services:
-  - description: Monthly Salary
-    price: 1000.00
-  - description: Overtime
-    details: 10 hours at €12.00 / hour
-    price: 120.00
-  - description: Used Anton
-    details: 20 hours at €100.00 / hour
-    price: 2000.00
-  - description: Expense \#1
-    details: Ate pizza (receipt attached)
-    price: 10.00
-  - description: Expense \#2
-    details: Travelled to conference (receipt attached)
-    price: 20.00
+  - description: 'Consultancy services'
+    hourly:
+      hours: 160
+      rate: 10.00
+  - description: 'Used Anton'
+    hourly:
+      hours: 10.50
+      rate: 100.00
+  - description: 'Bonus'
+    other:
+      price: 100.00
+  - description: 'Expense \#1'
+    other:
+      price: 1000.00
+      details: 'Acquired equipment (attached invoice with number 123456789)'
+  - description: 'Expense \#2'
+    other:
+      price: 10.00
+      details: 'Ate pizza (receipt attached)'
+  - description: 'Expense \#3'
+    other:
+      price: 150.00
+      details: 'Travelled to conference (receipts attached)'
 ```
 
-`services` is a list of dictionaries detailing the services / goods the invoice is for.
+`services` is a list of maps detailing the services / goods the invoice is for.
 
-`description` is a description of the service / good provided.
+`services[].description` is a description of the service / good provided.
 
-`details` are details regarding the service / good provided.
-This is optional.
+`services[].hourly` is a map requiring two keys: `hours` and `rate`.
+The values of both keys must be numbers.
+This should be used to describe hourly services; the total will be calculated automatically.
+A note will be added under the service description stating the amount of hours worked and the agreed upon rate.
+`services[].hourly` takes precedence over `services[].other`.
 
-`price` is the cost of the service / good provided.
-Price must reflect the currency provided in `currency`.
+`services[].other` is a map requiring one key (`price`), with another key (`details`) being optional.
+`services[].other.price` is the cost of the service / good provided.
 Must be a number.
+`services[].other.details` is optional and is added under the service description when provided.
+`services[].hourly` takes precedence over `services[].other`.
 
 ## Running
 
@@ -148,6 +163,6 @@ Edit `data.yml` and re-run the command above to generate more invoices.
 
 ## Example Invoices
 
-![Example invoice using the Quicksand font](examples/quicksand-without-currency-conversion.png "Example invoice using the Quicksand font")
+![Example invoice using the Catamaran font](examples/01.png "Example invoice using the Catamaran font")
 
-![Example invoice using the Catamaran font and EUR-USD currency conversion](examples/catamaran-with-currency-conversion.png "Example invoice using the Catamaran font and EUR-USD currency conversion")
+![Example invoice using the Lato font and bigger margins](examples/02.png "Example invoice using the Lato font and bigger margins")
