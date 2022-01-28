@@ -15,7 +15,7 @@ Note that the YAML file must be properly terminated (`---` at the end of the fil
 ```yaml
 font: 'Open Sans'
 fontsize: '10pt'
-geometry: 'left=20mm,right=20mm,top=30mm,bottom=30mm'
+geometry: 'left=20mm,right=20mm,top=20mm,bottom=20mm'
 ```
 
 `font` can be one of:
