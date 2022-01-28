@@ -151,15 +151,21 @@ Must be a number.
 
 ## Running
 
-`cd` to a working directory that includes a `data.yml` file.
-Then run
+`cd` to the root of this repository, then build the Docker image:
 
-```shell
-docker run --rm --user $(id -u):$(id -g) --volume=$(pwd):/datadir loizoskounios/simple-invoice-generator
+```
+docker build --tag simple-invoice-generator .
 ```
 
-Once the image is pulled and ran, an `invoice.pdf` file should exist in your working directory.
-Edit `data.yml` and re-run the command above to generate more invoices.
+`cd` to a working directory that includes a `data.yml` file.
+Run a container while bind-mounting the working directory:
+
+```shell
+docker run --rm --user $(id -u):$(id -g) --volume=$(pwd):/datadir simple-invoice-generator
+```
+
+Once the container finishes its task, an `invoice.pdf` file should exist in your working directory.
+Edit `data.yml` and run the earlier command again to generate more invoices.
 
 ## Example Invoices
 
