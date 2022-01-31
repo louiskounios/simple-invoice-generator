@@ -187,6 +187,13 @@ Edit `data.yml` and run the earlier command again to generate more invoices.
 
 ## Example Invoices
 
-![Example invoice using the Catamaran font](examples/01.png "Example invoice using the Catamaran font")
+Some (converted-to-png) example invoices generated using different fonts are shown below.
+Check the [examples](examples) directory to see more examples together with the generated pdfs.
 
-![Example invoice using the Lato font and bigger margins](examples/02.png "Example invoice using the Lato font and bigger margins")
+![Example invoice using the Catamaran font](examples/Catamaran.png "Example invoice using the Catamaran font")
+
+![Example invoice using the Dosis font](examples/Dosis.png "Example invoice using the Dosis font")
+
+![Example invoice using the FiraSans font](examples/FiraSans.png "Example invoice using the FiraSans font")
+
+![Example invoice using the OpenSans font](examples/OpenSans.png "Example invoice using the OpenSans font")
