@@ -132,7 +132,7 @@ services:
       rate: 10.00
   - description: 'Used Anton'
     hourly:
-      hours: 10.50
+      hours: 10.5
       rate: 100.00
   - description: 'Bonus'
     other:

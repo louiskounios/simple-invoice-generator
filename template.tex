@@ -137,11 +137,11 @@
     $endif$ \\
   $endfor$
   \hline
-  @ & @ & \\[-1.9em]
-  @ & @ \multicolumn{1}{r}{Subtotal:} & :={sum(c1:[0,-2])} \\[-0.7em]
-  @ & @ \multicolumn{1}{r}{VAT rate (\%):} & $vat-rate$ \\[-0.7em]
-  @ & @ \multicolumn{1}{r}{VAT due:} & [0,-2] * ([0,-1] / 100) \\[-0.7em]
-  @ & @ \multicolumn{1}{r}{\textbf{Total ($currency$):}} & [0,-3] + [0,-1]
+  @ & @ & \\[-2em]
+  @ & @ \multicolumn{1}{r}{Subtotal} & :={sum(c1:[0,-2])} \\[-0.7em]
+  @ & @ \multicolumn{1}{r}{VAT rate (\%)} & $vat-rate$ \\[-0.7em]
+  @ & @ \multicolumn{1}{r}{VAT due} & [0,-2] * ([0,-1] / 100) \\[-0.7em]
+  @ & @ \multicolumn{1}{r}{\textbf{Total ($currency$)}} & [0,-3] + [0,-1]
 \end{spreadtab}
 
 \vspace{1.8em}
