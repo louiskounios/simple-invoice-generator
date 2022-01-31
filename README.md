@@ -13,18 +13,32 @@ Unless specified otherwise, values are treated as raw strings.
 Note that the YAML file must be properly terminated (`---` at the end of the file) otherwise pandoc will have trouble loading it.
 
 ```yaml
-font: 'Open Sans'
+fonts_path: '/fonts'
+font: 'OpenSans'
 fontsize: '10pt'
 geometry: 'left=20mm,right=20mm,top=20mm,bottom=20mm'
 ```
 
-`font` can be one of:
+`fonts_path` is a hardcoded (😱) internal variable used for automation purposes and should be left unchanged.
 
-- Catamaran
-- Lato
-- Open Sans
-- Raleway
-- Ubuntu
+`font` must be one of:
+
+```
+Catamaran
+Dosis
+FiraSans
+Lato
+Montserrat
+NotoSans
+Nunito
+OpenSans
+Oxygen
+Poppins
+Quicksand
+Raleway
+SourceSansPro
+Ubuntu
+```
 
 `fontsize` can be any valid font size that can be read by `\documentclass` in LaTeX.
 
@@ -32,7 +46,7 @@ geometry: 'left=20mm,right=20mm,top=20mm,bottom=20mm'
 
 ```yaml
 invoice-number: '00001'
-date: '28/01/2022'
+date: '31/01/2022'
 ```
 
 `invoice-number` is the invoice number in string format.

@@ -19,9 +19,11 @@
 \usepackage{fontspec}
 
 % Configure main and sans fonts.
-$if(font)$
-  \setmainfont{$font$}
-$endif$
+\setmainfont[%
+  Path=$fonts_path$/$font$/,
+  UprightFont=*-Upright.ttf,
+  BoldFont=*-Bold.ttf,
+]{$font$}
 
 \usepackage{numprint} % Number formatting.
 \usepackage{spreadtab} % Excel-like tables.
