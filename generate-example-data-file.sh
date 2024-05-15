@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
+cd "$(dirname "$0")"
+
 DST="${1:-data.example.yml}"
-FONTS_PATH="${2:-/fonts}"
-FONT_NAME="${3:-OpenSans}"
+FONTS_PATH="${2:-$(pwd)/fonts}"
+FONT_NAME="${3:-Ubuntu}"
 cat << EOF > "$DST"
 ---
 fonts_path: '$FONTS_PATH'

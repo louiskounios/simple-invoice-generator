@@ -1,23 +1,26 @@
 #!/usr/bin/env bash
 
-FONTS_DIR="./fonts"
+cd "$(dirname "$0")"
 
-./install-fonts.sh "$FONTS_DIR"
+FONTS_DIR="$(pwd)/fonts"
 
 declare -a fonts=(
-  "Catamaran"
-  "Dosis"
+  "Barlow"
   "FiraSans"
+  "Hind"
+  "HindMadurai"
+  "HindSiliguri"
+  "Kanit"
   "Lato"
-  "Montserrat"
-  "NotoSans"
-  "Nunito"
-  "OpenSans"
+  "MontserratAlternates"
+  "Mukta"
+  "NanumGothic"
   "Oxygen"
   "Poppins"
-  "Quicksand"
-  "Raleway"
-  "SourceSansPro"
+  "PTSans"
+  "Sarabun"
+  "Tajawal"
+  "TitilliumWeb"
   "Ubuntu"
 )
 
@@ -31,5 +34,3 @@ for font in "${fonts[@]}"; do
   rm "$data_file"
 done
 echo "Finished generating example invoices." >&2
-
-rm -rf "$FONTS_DIR"

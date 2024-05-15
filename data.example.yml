@@ -1,6 +1,6 @@
 ---
-fonts_path: '/fonts'
-font: 'OpenSans'
+fonts_path: '/home/user/repos/simple-invoice-generator/fonts'
+font: 'Ubuntu'
 fontsize: '10pt'
 geometry: 'left=20mm,right=20mm,top=20mm,bottom=20mm'
 

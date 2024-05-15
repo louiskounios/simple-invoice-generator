@@ -13,30 +13,33 @@ Unless specified otherwise, values are treated as raw strings.
 Note that the YAML file must be properly terminated (`---` at the end of the file) otherwise pandoc will have trouble loading it.
 
 ```yaml
-fonts_path: '/fonts'
+fonts_path: '/home/user/repos/simple-invoice-generator/fonts'
 font: 'OpenSans'
 fontsize: '10pt'
 geometry: 'left=20mm,right=20mm,top=20mm,bottom=20mm'
 ```
 
-`fonts_path` is a hardcoded (😱) internal variable used for automation purposes and should be left unchanged.
+`fonts_path` should generally be the path to the `fonts` directory in this repo.
 
 `font` must be one of:
 
 ```
-Catamaran
-Dosis
+Barlow
 FiraSans
+Hind
+HindMadurai
+HindSiliguri
+Kanit
 Lato
-Montserrat
-NotoSans
-Nunito
-OpenSans
+MontserratAlternates
+Mukta
+NanumGothic
 Oxygen
 Poppins
-Quicksand
-Raleway
-SourceSansPro
+PTSans
+Sarabun
+Tajawal
+TitilliumWeb
 Ubuntu
 ```
 
@@ -169,21 +172,13 @@ Must be a number.
 
 ## Running
 
-`cd` to the root of this repository, then build the Docker image:
+Assuming `data.yml` is in the current directory and `fonts_path` is configured as described above:
 
-```
-docker build --tag simple-invoice-generator .
-```
-
-`cd` to a working directory that includes a `data.yml` file.
-Run a container while bind-mounting the working directory:
-
-```shell
-docker run --rm --user $(id -u):$(id -g) --volume=$(pwd):/datadir simple-invoice-generator
+```sh
+pandoc ./data.yml --template=/home/user/repos/simple-invoice-generator/template.tex --output=invoice.pdf --verbose --pdf-engine=xelatex
 ```
 
-Once the container finishes its task, an `invoice.pdf` file should exist in your working directory.
-Edit `data.yml` and run the earlier command again to generate more invoices.
+This should output `invoice.pdf` in the current directory.
 
 ## Example Invoices
 
