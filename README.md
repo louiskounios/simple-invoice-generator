@@ -185,10 +185,10 @@ This should output `invoice.pdf` in the current directory.
 Some (converted-to-png) example invoices generated using different fonts are shown below.
 Check the [examples](examples) directory to see more examples together with the generated pdfs.
 
-![Example invoice using the Catamaran font](examples/Catamaran.png "Example invoice using the Catamaran font")
+![Example invoice using the Barlow font](examples/Barlow.png "Example invoice using the Barlow font")
 
-![Example invoice using the Dosis font](examples/Dosis.png "Example invoice using the Dosis font")
+![Example invoice using the Fira Sans font](examples/FiraSans.png "Example invoice using the Fira Sans font")
 
-![Example invoice using the FiraSans font](examples/FiraSans.png "Example invoice using the FiraSans font")
+![Example invoice using the PT Sans font](examples/PTSans.png "Example invoice using the PT Sans font")
 
-![Example invoice using the OpenSans font](examples/OpenSans.png "Example invoice using the OpenSans font")
+![Example invoice using the Titillium Web font](examples/TitilliumWeb.png "Example invoice using the Titillium Web font")
