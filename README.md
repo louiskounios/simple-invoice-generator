@@ -25,22 +25,34 @@ geometry: 'left=20mm,right=20mm,top=20mm,bottom=20mm'
 
 ```
 Barlow
+Cardo
+CormorantGaramond
+CrimsonText
 FiraSans
+Glegoo
 Hind
 HindMadurai
 HindSiliguri
+IBMPlexSerif
 Kanit
 Lato
+LibreBaskerville
+Merriweather
 MontserratAlternates
 Mukta
 NanumGothic
+NoticiaText
 Oxygen
 Poppins
 PTSans
+PTSerif
 Sarabun
+Spectral
 Tajawal
+Tinos
 TitilliumWeb
 Ubuntu
+ZillaSlab
 ```
 
 `fontsize` can be any valid font size that can be read by `\documentclass` in LaTeX.
